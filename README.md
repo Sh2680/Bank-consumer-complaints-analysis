@@ -6,7 +6,7 @@
 ![pandas](https://img.shields.io/badge/pandas-data%20analysis-150458?logo=pandas&logoColor=white)
 ![Power BI](https://img.shields.io/badge/Power%20BI-dashboard-F2C811?logo=powerbi&logoColor=black)
 ![Colab](https://img.shields.io/badge/Google%20Colab-notebook-F9AB00?logo=googlecolab&logoColor=white)
-![License](https://img.shields.io/badge/license-MIT-green)
+
 
 ![Dashboard overview](powerbi/dashboard_screenshot.png)
 
@@ -23,10 +23,8 @@
 8. [Dashboard](#dashboard)
 9. [Business Recommendations](#business-recommendations)
 10. [Project Structure](#project-structure)
-11. [How to Run](#how-to-run)
-12. [Limitations](#limitations)
-13. [Conclusion and Future Scope](#conclusion-and-future-scope)
-14. [Author](#author)
+11. [Conclusion and Future Scope](#conclusion-and-future-scope)
+
 
 ---
 
@@ -65,7 +63,7 @@ The project is framed as work for the Customer Experience and Compliance Analyti
 | Data collection | Python, `requests`, CFPB public API |
 | Cleaning and analysis | Python, `pandas`, `numpy`, `matplotlib`, Google Colab |
 | Dashboard | Microsoft Power BI Desktop, DAX |
-| Version control and docs | Git, GitHub, Markdown, Word/PDF report |
+| Version control and docs | Git, GitHub, Word/PDF report |
 
 ## Dataset
 
@@ -78,7 +76,7 @@ The project is framed as work for the Customer Experience and Compliance Analyti
 | **Excluded on purpose** | Credit reporting and debt collection. They concern credit bureaus and collectors, not banks, and in the month checked (August 2026) credit-reporting complaints (623,453) outnumbered all banking products combined (27,163) |
 | **Target variable** | None (descriptive and diagnostic analytics). `timely_flag` and `relief_flag` act as outcome measures |
 
-The cleaned dataset is stored in [`data/cfpb_powerbi_files.zip`](data/) (13 MB compressed; it contains `complaints_clean.csv`, 164 MB unzipped, plus the data dictionary). The data dictionary is also available as [`data/data_dictionary.csv`](data/data_dictionary.csv). See [`data/README.md`](data/README.md) for details and for how to regenerate the data.
+The cleaned dataset is stored in `complaints_clean.csv. The data dictionary is also available as [`data/data_dictionary.csv`](data/data_dictionary.csv).
 
 ## Methodology
 
@@ -91,14 +89,7 @@ CFPB API  ->  Collect (monthly, validated)  ->  Clean  ->  Explore (EDA)  ->  Ex
 3. **Explore.** Seven charts and several summary tables, with an insight and recommendation under every chart in the notebook.
 4. **Visualise.** A one-page Power BI dashboard whose numbers match the Python results exactly.
 
-### Data quality issues found and fixed
 
-| Problem | How it was found | Fix |
-|---|---|---|
-| Credit cards returned zero rows | Product counts showed only 5 products | The API lists "Credit card" and "Prepaid card" separately; names corrected |
-| HTTP 403 and 429 errors | Collection failed | Browser-style header and retry with waiting |
-| 16,176 duplicate records | Cleaning step | The API end date is inclusive, so month windows overlapped by a day; deduplicated on `complaint_id` |
-| Latest month incomplete | The monthly line fell sharply at the end | Daily counts held at about 1,000 to 1,100 per weekday until 16 Sep, then dropped to 80 to 150. This matches the CFPB's publication lag of up to 15 days, so September 2026 was excluded |
 
 ## Key Findings
 
@@ -121,23 +112,17 @@ CFPB API  ->  Collect (monthly, validated)  ->  Clean  ->  Explore (EDA)  ->  Ex
   <img src="documents/images/fig05_relief_rate.png" width="48%" alt="Relief rate by product">
 </p>
 
-More charts, with the insight and recommendation for each, are in the [notebook](python/01_cfpb_bank_complaints_analysis.ipynb) and in the [full report](documents/Project_Report_CFPB_Bank_Complaints.pdf).
+More charts, with the insight and recommendation for each, are in the [notebook](python/cfpb_bank_complaints_final.ipynb) and in the [full report](documents/Project_Report_Bank_consumer_complaints.pdf).
 
 ## Dashboard
 
 A one-page Power BI dashboard with five KPI cards (Total Complaints, Timely Response %, Relief Rate %, Companies, Late Responses), charts by company, product, issue, month and channel, a response-quality table, and slicers for state, year and product group.
 
-**DAX measures**
 
-```
-Total Complaints   = COUNTROWS(complaints_clean)
-Timely Response %  = DIVIDE(SUM(complaints_clean[timely_flag]), [Total Complaints])
-Relief Rate %      = DIVIDE(SUM(complaints_clean[relief_flag]), [Total Complaints])
-Companies          = DISTINCTCOUNT(complaints_clean[company])
-Late Responses     = [Total Complaints] - SUM(complaints_clean[timely_flag])
-```
+![Dashboard overview](powerbi/dashboard_screenshot.png)
 
-**Validation:** dashboard totals match the Python output (596,121 complaints, 96.9% timely, 16.5% relief, and every product-group row). Build steps: [`powerbi/powerbi_build_steps.md`](powerbi/powerbi_build_steps.md).
+
+
 
 ## Business Recommendations
 
@@ -157,60 +142,25 @@ Late Responses     = [Total Complaints] - SUM(complaints_clean[timely_flag])
 ```
 bank-consumer-complaints-analysis/
 ├── README.md
-├── LICENSE
-├── requirements.txt
 ├── .gitignore
 │
 ├── data/
-│   ├── README.md                                   # source, how to regenerate, dataset facts
-│   ├── data_dictionary.csv                         # meaning of every column
+│   ├── data_dictionary.csv                         
 │   └── cfpb_powerbi_files.zip                      # cleaned dataset (complaints_clean.csv, 596,121 rows)
 │
 ├── documents/
-│   ├── Project_Report_CFPB_Bank_Complaints.pdf     # full business report (21 pages)
-│   ├── Project_Report_CFPB_Bank_Complaints.docx    # editable version
-│   ├── chart_insights.md                           # insight and recommendation for every chart
-│   └── images/                                     # charts used in the README and report
+│   ├── Project_Report_Bank_consumer_complaints.pdf     # full business report 
+│   └── images/                                    
 │
 ├── powerbi/
-│   ├── README.md
 │   ├── cfpb_bank_complaints.pbix                   # Power BI dashboard file
 │   ├── dashboard_screenshot.png
-│   ├── dax_measures.md                             # all DAX measures
-│   └── powerbi_build_steps.md                      # step-by-step build guide
 │
 └── python/
-    ├── 01_cfpb_bank_complaints_analysis.ipynb      # collection, cleaning, EDA, insights under every chart
-    └── cfpb_pipeline.py                            # same pipeline as a command-line script
+    ├── cfpb_bank_complaints_final.ipynb      # collection, cleaning, EDA, insights under every chart
 ```
 
-## How to Run
 
-**Option A: Google Colab (easiest)**
-1. Open [Google Colab](https://colab.research.google.com) and upload `python/01_cfpb_bank_complaints_analysis.ipynb`.
-2. Click **Runtime, then Run all**. Collection takes about 10 to 20 minutes.
-3. The last cell downloads a ZIP containing `complaints_clean.csv` and the data dictionary (the same file as `data/cfpb_powerbi_files.zip`).
-
-**Option B: Local script**
-```bash
-git clone https://github.com/<your-username>/bank-consumer-complaints-analysis.git
-cd bank-consumer-complaints-analysis
-pip install -r requirements.txt
-python python/cfpb_pipeline.py --start 2024-10-01 --end 2026-10-01 --cutoff 2026-09-01
-```
-`--cutoff` is the first day of the first incomplete month, because the CFPB publishes complaints with a lag of up to 15 days. The cleaned file appears in `data/processed/complaints_clean.csv`.
-
-**Open the dashboard:** open `powerbi/cfpb_bank_complaints.pbix` in Power BI Desktop (Windows) and point the data source to your unzipped `complaints_clean.csv`, or rebuild it with [`powerbi/powerbi_build_steps.md`](powerbi/powerbi_build_steps.md).
-
-> The CFPB API can change. If a download fails, check the product names against the CFPB website and re-run; finished months are kept.
-
-## Limitations
-
-- Raw complaint counts favour large companies; no customer-base data was available to normalise them.
-- Complaints about depository institutions with under $10 billion in assets are referred elsewhere and are not published, so small banks are absent.
-- A complaint shows customer dissatisfaction, not proven wrongdoing.
-- The newest weeks of any extract are incomplete because of the publication lag.
-- The causes of the January 2025 spike come from public reporting and are not provable from this dataset.
 
 ## Conclusion and Future Scope
 
@@ -218,18 +168,7 @@ Cards, bank accounts and digital payments drive most complaints, response qualit
 
 **Next steps:** normalise by customer base and population, add text analytics on complaint narratives, forecast monthly volume, build models to predict late responses or relief, load the data into SQL, and automate monthly refreshes.
 
-## Author
 
-**[Your Name]**
-Aspiring Data Analyst | Python, SQL, Power BI
-
-- LinkedIn: [your-linkedin-url]
-- GitHub: [your-github-url]
-- Email: [your-email]
-
-## License
-
-Released under the [MIT License](LICENSE). The complaint data belongs to the CFPB and is published as open data.
 
 ## Acknowledgements
 
