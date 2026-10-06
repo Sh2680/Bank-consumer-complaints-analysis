@@ -8,7 +8,6 @@
 ![Colab](https://img.shields.io/badge/Google%20Colab-notebook-F9AB00?logo=googlecolab&logoColor=white)
 
 
-![Dashboard overview](powerbi/dashboard_screenshot.png)
 
 ---
 
@@ -47,6 +46,7 @@ I built the whole workflow myself: collected the data through the CFPB API, vali
 
 The project is framed as work for the Customer Experience and Compliance Analytics team of a retail financial services provider, using the public CFPB data as an industry benchmark. (The scenario is a learning framing; no company engaged me and all results come from public data.)
 
+
 ## Objectives
 
 1. Measure complaint volume and trend across six consumer banking product groups.
@@ -55,6 +55,7 @@ The project is framed as work for the Customer Experience and Compliance Analyti
 4. Find and explain anomalies (such as January 2025) so they do not distort decisions.
 5. Deliver prioritised, evidence-based recommendations with KPIs to track.
 6. Build an interactive Power BI dashboard for non-technical stakeholders.
+   
 
 ## Tools and Technologies
 
@@ -64,6 +65,8 @@ The project is framed as work for the Customer Experience and Compliance Analyti
 | Cleaning and analysis | Python, `pandas`, `numpy`, `matplotlib`, Google Colab |
 | Dashboard | Microsoft Power BI Desktop, DAX |
 | Version control and docs | Git, GitHub, Word/PDF report |
+
+
 
 ## Dataset
 
@@ -76,12 +79,13 @@ The project is framed as work for the Customer Experience and Compliance Analyti
 | **Excluded on purpose** | Credit reporting and debt collection. They concern credit bureaus and collectors, not banks, and in the month checked (August 2026) credit-reporting complaints (623,453) outnumbered all banking products combined (27,163) |
 | **Target variable** | None (descriptive and diagnostic analytics). `timely_flag` and `relief_flag` act as outcome measures |
 
-The cleaned dataset is stored in `complaints_clean.csv. The data dictionary is also available as [`data/data_dictionary.csv`](data/data_dictionary.csv).
+The cleaned dataset is stored in `complaints_clean.csv. 
+
 
 ## Methodology
 
 ```
-CFPB API  ->  Collect (monthly, validated)  ->  Clean  ->  Explore (EDA)  ->  Export CSV  ->  Power BI  ->  Insights
+CFPB API   ->  Clean  ->  Explore (EDA)  ->  Export CSV  ->  Power BI  ->  Insights
 ```
 
 1. **Collect.** Downloaded each month through the API and compared the downloaded row count with the count the API reported. A month is saved only if the two match, and the run can resume after a failure.
@@ -103,6 +107,8 @@ CFPB API  ->  Collect (monthly, validated)  ->  Clean  ->  Explore (EDA)  ->  Ex
 | 6 | **Concentration is high:** the top 10 companies hold 48.2% of complaints, and the top 10 states hold 62.2% |
 | 7 | **Intake is not the bottleneck:** 88.5% of complaints are forwarded to the company the same day, and Web is 92.9% of channels |
 
+
+
 <p align="center">
   <img src="documents/images/fig01_monthly_trend.png" width="48%" alt="Complaints per month">
   <img src="documents/images/fig02_product_groups.png" width="48%" alt="Complaints by product group">
@@ -112,7 +118,10 @@ CFPB API  ->  Collect (monthly, validated)  ->  Clean  ->  Explore (EDA)  ->  Ex
   <img src="documents/images/fig05_relief_rate.png" width="48%" alt="Relief rate by product">
 </p>
 
+
 More charts, with the insight and recommendation for each, are in the [notebook](python/cfpb_bank_complaints_final.ipynb) and in the [full report](documents/Project_Report_Bank_consumer_complaints.pdf).
+
+
 
 ## Dashboard
 
@@ -136,6 +145,8 @@ A one-page Power BI dashboard with five KPI cards (Total Complaints, Timely Resp
 | 6 | Benchmark fairly: normalise per customer and per capita, and report with and without January 2025 | Raw counts favour large firms |
 
 **Illustrative impact (estimates under stated assumptions, not forecasts):** a 10% reduction in the top two issues would remove about 14,700 complaints; lifting student-loan timeliness to about 98% would remove about 10,500 late responses and raise the overall timely rate from 96.9% to roughly 98.7%.
+
+
 
 ## Project Structure
 
@@ -169,7 +180,3 @@ Cards, bank accounts and digital payments drive most complaints, response qualit
 **Next steps:** normalise by customer base and population, add text analytics on complaint narratives, forecast monthly volume, build models to predict late responses or relief, load the data into SQL, and automate monthly refreshes.
 
 
-
-## Acknowledgements
-
-- [Consumer Financial Protection Bureau](https://www.consumerfinance.gov/) for the public complaint database and API.
