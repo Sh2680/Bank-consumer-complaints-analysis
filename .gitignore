@@ -1,0 +1,18 @@
+# Large data (the 164 MB CSV exceeds GitHub's 100 MB limit; the compressed zip in data/ is kept)
+data/raw/
+data/processed/
+data/complaints_clean.csv
+cfpb_raw/
+powerbi_files/
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

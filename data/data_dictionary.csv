@@ -1,0 +1,18 @@
+column,meaning
+complaint_id,Unique CFPB complaint number
+date_received,Date the CFPB received the complaint
+date_sent_to_company,Date the CFPB forwarded it to the company
+year / quarter / month_num / month_name / weekday,Time parts of date_received
+year_month,First day of the month of date_received (use for monthly trends)
+product,Official CFPB product name
+product_group,Simplified product group made for the dashboard
+sub_product / issue / sub_issue,More detail on what the complaint is about
+company,Company the complaint is about (spelling standardised)
+state,US state of the consumer (Unknown if missing)
+submitted_via,"Channel used: Web, Phone, Referral, Postal mail"
+tags,"Older American / Servicemember, else None"
+company_response_to_consumer,How the company closed the complaint
+timely_response,Yes/No: did the company respond on time
+timely_flag,"1 if timely, else 0 (average it to get Timely %)"
+relief_flag,"1 if closed with monetary or non-monetary relief, else 0"
+days_to_company,Days between receipt and forwarding to the company
